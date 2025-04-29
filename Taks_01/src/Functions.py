@@ -1,5 +1,6 @@
 from numpy import asarray
-from math import exp
+from math import exp, sin, sqrt
+
 
 def Triangular(x, a, b, c):
 
@@ -20,16 +21,14 @@ def Triangular(x, a, b, c):
         else:
             raise nao_SAT_error
 
+
 def Trapezoidal(x, a, b, c, d):
     
     nao_SAT_error = ValueError("Os valores de a, b e c geram Insatisfazibilidade da função Trapezoidal") 
 
     x = asarray(x)              #Garantindo que o valor de x passado será um array, mesmo que seja um único valor
     
-    if a <= b <= c:             # a <= b <= c
-        raise nao_SAT_error
-    
-    else:
+    if a <= b <= c:        
         if x <= a or x >= d:        #  x <= a 
             return 0
         elif x <= b and x >= a:     # a <= x <= b
@@ -40,6 +39,10 @@ def Trapezoidal(x, a, b, c, d):
             return (d - x)/(d - c)
         else:
             raise nao_SAT_error
+
+    else:
+    # a <= b <= c
+        raise nao_SAT_error
 
 
 def Gaussiana(x, sigmazinho, c):
@@ -53,8 +56,7 @@ def Gaussiana(x, sigmazinho, c):
     return exp(num/den)
 
 
-
-def Sigmoidal(x):
+def Sigmoidal(x, a, c):
 
     nao_SAT_error = ValueError("Os valores de a, b e c geram Insatisfazibilidade da função Sigmoidal") 
 
@@ -72,7 +74,7 @@ def Sino_Generalizada(x, a, b, c):
     return 1/den
 
 
-def FuncS(x):
+def FuncS(x, a, b):
 
     nao_SAT_error = ValueError("Os valores de a, b e c geram Insatisfazibilidade da função Z") 
 
@@ -92,7 +94,7 @@ def FuncS(x):
         raise nao_SAT_error
 
 
-def FuncZ(x):
+def FuncZ(x, a, b):
     nao_SAT_error = ValueError("Os valores de a, b e c geram Insatisfazibilidade da função Z") 
 
     if x<= a:
@@ -118,12 +120,30 @@ def Cauchy(x, x0, gamma):
     return 1.0/den
 
 
+def Gaussiana_Dupla(x, Amplitude1, Amplitude2, Media1, Media2, Sigma1, Sigma2):
+    num1 = Amplitude1 * exp(- (x - Media1)**2)
+    den1 = (2 * Sigma1 ** 2)
 
-def Gaussiana_Dupla(x):
+    num2 = Amplitude2 * exp(- (x - Media2)**2)
+    den2 = (2 * Sigma2 ** 2)
+
+    output = num1/den1 + num2/den2
+
+    return output
 
 
 def UserFunction1(x):
 
+    num = sin(x)
+    den = sqrt(x) * 1/x
+
+    return num/den
 
 
 def UserFunction2(x):
+
+    power = 1-sin(x)
+    num = x**(2-x)
+    den = 3*x
+
+    return (num**power)/den
